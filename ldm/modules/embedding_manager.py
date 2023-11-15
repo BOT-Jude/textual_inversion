@@ -83,7 +83,7 @@ class EmbeddingManager(nn.Module):
                 token_params = torch.nn.Parameter(torch.rand(size=(num_vectors_per_token, token_dim), requires_grad=True))
             
             self.string_to_token_dict[placeholder_string] = token
-            self.string_to_param_dict[placeholder_string] = token_params
+            self.string_to_param_dict[placeholder_string] = token_params  # replace with module to get parameters
 
     def forward(
             self,
@@ -98,7 +98,7 @@ class EmbeddingManager(nn.Module):
 
             if self.max_vectors_per_token == 1: # If there's only one vector per token, we can do a simple replacement
                 placeholder_idx = torch.where(tokenized_text == placeholder_token.to(device))
-                embedded_text[placeholder_idx] = placeholder_embedding
+                embedded_text[placeholder_idx] = placeholder_embedding  # change to using modules
             else: # otherwise, need to insert and keep track of changing indices
                 if self.progressive_words:
                     self.progressive_counter += 1

@@ -60,12 +60,12 @@ class EmbeddingManager(nn.Module):
         if hasattr(embedder, 'tokenizer'):  # using Stable Diffusion's CLIP encoder
             self.is_clip = True
             get_token_for_string = partial(get_clip_token_for_string, embedder.tokenizer)
-            self.token_dim = 768
+            # token_dim = 768
 
         else:  # using LDM's BERT encoder
             self.is_clip = False
             get_token_for_string = partial(get_bert_token_for_string, embedder.tknz_fn)
-            self.token_dim = 1280
+            # token_dim = 1280
 
         for idx, placeholder_string in enumerate(placeholder_strings):
 
@@ -76,7 +76,7 @@ class EmbeddingManager(nn.Module):
             self,
             tokenized_text,
             embedded_text,
-            **kwargs
+            special_embeddings
     ):
         b, n, device = *tokenized_text.shape, tokenized_text.device
 
@@ -85,7 +85,7 @@ class EmbeddingManager(nn.Module):
             placeholder_module = self.string_to_module_dict[placeholder_string].to(device)
 
             placeholder_idx = torch.where(tokenized_text == placeholder_token.to(device))
-            embedded_text[placeholder_idx] = placeholder_module(**kwargs)
+            embedded_text[placeholder_idx] = placeholder_module(special_embeddings)
 
         return embedded_text
 

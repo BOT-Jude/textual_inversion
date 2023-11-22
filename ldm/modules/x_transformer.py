@@ -599,6 +599,7 @@ class TransformerWrapper(nn.Module):
     def forward(
             self,
             x,
+            *args,
             return_embeddings=False,
             mask=None,
             return_mems=False,
@@ -612,7 +613,7 @@ class TransformerWrapper(nn.Module):
         embedded_x = self.token_emb(x)
         
         if embedding_manager:
-            x = embedding_manager(x, embedded_x)
+            x = embedding_manager(x, embedded_x, *args)  # I found the line!
         else:
             x = embedded_x
 

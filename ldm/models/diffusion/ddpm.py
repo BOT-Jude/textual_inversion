@@ -593,7 +593,7 @@ class LatentDiffusion(DDPM):
     def get_learned_conditioning(self, c, **kwargs):
         if self.cond_stage_forward is None:
             if hasattr(self.cond_stage_model, 'encode') and callable(self.cond_stage_model.encode):
-                c = self.cond_stage_model.encode(c, *args, embedding_manager=self.embedding_manager, **kwargs)  # add **kwargs here?
+                c = self.cond_stage_model.encode(c, embedding_manager=self.embedding_manager, **kwargs)  # add **kwargs here?
                 if isinstance(c, DiagonalGaussianDistribution):
                     c = c.mode()
             else:

@@ -2,6 +2,7 @@ import torch
 from torch import nn
 
 from functools import partial
+from ldm.util import instantiate_from_config
 
 DEFAULT_PLACEHOLDER_TOKEN = ["*"]
 
@@ -70,7 +71,7 @@ class EmbeddingManager(nn.Module):
         for idx, placeholder_string in enumerate(placeholder_strings):
 
             self.string_to_token_dict[placeholder_string] = get_token_for_string(placeholder_string)
-            self.string_to_module_dict[placeholder_string] = placeholder_modules[idx]
+            self.string_to_module_dict[placeholder_string] = instantiate_from_config(placeholder_modules[idx])
 
     def forward(
             self,
@@ -87,7 +88,7 @@ class EmbeddingManager(nn.Module):
             placeholder_module = self.string_to_module_dict[placeholder_string].to(device)
 
             placeholder_idx = torch.where(tokenized_text == placeholder_token.to(device))
-            embedded_text[placeholder_idx] = placeholder_module(batch["embeddings"])
+            embedded_text[placeholder_idx] = placeholder_module(batch["embeddings"][placeholder_string])
 
         return embedded_text
 

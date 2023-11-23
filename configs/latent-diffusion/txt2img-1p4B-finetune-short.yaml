@@ -19,13 +19,10 @@ model:
     embedding_reg_weight: 0.0
 
     personalization_config:
-      target: ldm.modules.embedding_manager_with_modules.EmbeddingManager
+      target: ldm.modules.embedding_manager.EmbeddingManager
       params:
         placeholder_strings: ["*"]
-        placeholder_modules:
-          - target: torch.nn.Linear
-            input_dim: 8
-            output_dim: 1280
+        initializer_words: ["sculpture"]
         per_image_tokens: false
         num_vectors_per_token: 1
         progressive_words: False
@@ -91,14 +88,14 @@ data:
     num_workers: 2
     wrap: false
     train:
-      target: ldm.data.personalized_with_embeddings.PersonalizedBase
+      target: ldm.data.personalized.PersonalizedBase
       params:
         size: 256
         set: train
         per_image_tokens: false
         repeats: 100
     validation:
-      target: ldm.data.personalized_with_embeddings.PersonalizedBase
+      target: ldm.data.personalized.PersonalizedBase
       params:
         size: 256
         set: val

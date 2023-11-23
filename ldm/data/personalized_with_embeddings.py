@@ -7,6 +7,8 @@ from torchvision import transforms
 
 import random
 
+import torch
+
 imagenet_templates_smallest = [
     'a photo of a {}',
 ]
@@ -211,5 +213,7 @@ class PersonalizedBase(Dataset):
         image = self.flip(image)
         image = np.array(image).astype(np.uint8)
         example["image"] = (image / 127.5 - 1.0).astype(np.float32)
+
+        example["embeddings"] = torch.ones(8)
 
         return example

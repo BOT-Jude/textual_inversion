@@ -76,8 +76,10 @@ class EmbeddingManager(nn.Module):
             self,
             tokenized_text,
             embedded_text,
-            special_embeddings
+            batch=None
     ):
+        assert batch is not None
+
         b, n, device = *tokenized_text.shape, tokenized_text.device
 
         for placeholder_string, placeholder_token in self.string_to_token_dict.items():
@@ -85,7 +87,7 @@ class EmbeddingManager(nn.Module):
             placeholder_module = self.string_to_module_dict[placeholder_string].to(device)
 
             placeholder_idx = torch.where(tokenized_text == placeholder_token.to(device))
-            embedded_text[placeholder_idx] = placeholder_module(special_embeddings)
+            embedded_text[placeholder_idx] = placeholder_module(batch["embeddings"])
 
         return embedded_text
 

@@ -906,7 +906,7 @@ class LatentDiffusion(DDPM):
 
     def shared_step(self, batch, **kwargs):
         x, c = self.get_input(batch, self.first_stage_key)
-        loss = self(x, c, **kwargs)
+        loss = self(x, c, {**kwargs, 'batch': batch})
         return loss
 
     def forward(self, x, c, *args, **kwargs):

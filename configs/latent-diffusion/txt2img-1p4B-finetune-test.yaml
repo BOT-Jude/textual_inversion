@@ -24,8 +24,9 @@ model:
         placeholder_strings: ["*"]
         placeholder_modules:
           - target: torch.nn.Linear
-            input_dim: 8
-            output_dim: 1280
+            params:
+              input_dim: 8
+              output_dim: 1280
         per_image_tokens: false
         num_vectors_per_token: 1
         progressive_words: False

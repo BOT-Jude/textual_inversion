@@ -613,7 +613,7 @@ class TransformerWrapper(nn.Module):
         embedded_x = self.token_emb(x)
         
         if embedding_manager:
-            x = embedding_manager(x, embedded_x, *args)  # I found the line!
+            x = embedding_manager(x, embedded_x, **kwargs)  # I found the line!
         else:
             x = embedded_x
 

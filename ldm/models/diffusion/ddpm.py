@@ -347,7 +347,7 @@ class DDPM(pl.LightningModule):
 
     def shared_step(self, batch):
         x = self.get_input(batch, self.first_stage_key)
-        loss, loss_dict = self(x)
+        loss, loss_dict = self(x, batch=batch)
         return loss, loss_dict
 
     def training_step(self, batch, batch_idx):
@@ -590,17 +590,17 @@ class LatentDiffusion(DDPM):
             raise NotImplementedError(f"encoder_posterior of type '{type(encoder_posterior)}' not yet implemented")
         return self.scale_factor * z
 
-    def get_learned_conditioning(self, c, *args):
+    def get_learned_conditioning(self, c, **kwargs):
         if self.cond_stage_forward is None:
             if hasattr(self.cond_stage_model, 'encode') and callable(self.cond_stage_model.encode):
-                c = self.cond_stage_model.encode(c, *args, embedding_manager=self.embedding_manager)  # add **kwargs here?
+                c = self.cond_stage_model.encode(c, *args, embedding_manager=self.embedding_manager, **kwargs)  # add **kwargs here?
                 if isinstance(c, DiagonalGaussianDistribution):
                     c = c.mode()
             else:
-                c = self.cond_stage_model(c)
+                c = self.cond_stage_model(c, **kwargs)
         else:
             assert hasattr(self.cond_stage_model, self.cond_stage_forward)
-            c = getattr(self.cond_stage_model, self.cond_stage_forward)(c)
+            c = getattr(self.cond_stage_model, self.cond_stage_forward)(c, **kwargs)
         return c
 
     def meshgrid(self, h, w):
@@ -914,7 +914,7 @@ class LatentDiffusion(DDPM):
         if self.model.conditioning_key is not None:
             assert c is not None
             if self.cond_stage_trainable:
-                c = self.get_learned_conditioning(c, *args)  # add **kwargs here?
+                c = self.get_learned_conditioning(c, **kwargs)  # add **kwargs here?
             if self.shorten_cond_schedule:  # TODO: drop this option
                 tc = self.cond_ids[t].to(self.device)
                 c = self.q_sample(x_start=c, t=tc, noise=torch.randn_like(c.float()))

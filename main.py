@@ -480,7 +480,9 @@ class ModeSwapCallback(Callback):
             self.is_frozen = False
             trainer.optimizers = [pl_module.configure_opt_model()]
 
-if __name__ == "__main__":
+
+def main():
+
     # custom parser to specify config files, train, test and debug mode,
     # postfix, resume.
     # `--key value` arguments are interpreted as arguments to the trainer.
@@ -825,3 +827,9 @@ if __name__ == "__main__":
             os.rename(logdir, dst)
         if trainer.global_rank == 0:
             print(trainer.profiler.summary())
+
+    return model
+
+
+if __name__ == "__main__":
+    main()

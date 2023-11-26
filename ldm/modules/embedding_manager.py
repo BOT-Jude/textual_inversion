@@ -89,6 +89,7 @@ class EmbeddingManager(nn.Module):
             self,
             tokenized_text,
             embedded_text,
+            **kwargs
     ):
         b, n, device = *tokenized_text.shape, tokenized_text.device
 

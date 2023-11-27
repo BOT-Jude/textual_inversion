@@ -31,7 +31,8 @@ def load_model_from_config(config, ckpt, verbose=False):
     return model
 """
 
-if __name__ == "__main__":
+
+def run():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -182,3 +183,7 @@ if __name__ == "__main__":
     Image.fromarray(grid.astype(np.uint8)).save(os.path.join(outpath, f'{prompt.replace(" ", "-")}.jpg'))
 
     print(f"Your samples are ready and waiting four you here: \n{outpath} \nEnjoy.")
+
+
+if __name__ == "__main__":
+    run()

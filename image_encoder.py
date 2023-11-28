@@ -35,6 +35,5 @@ class NullEncoder:
     def __init__(self, output_dim):
         self.output_dim = output_dim
 
-
-def __call__(self, image):
-    return torch.ones(self.output_dim)
+    def __call__(self, image):
+        return torch.ones(self.output_dim)

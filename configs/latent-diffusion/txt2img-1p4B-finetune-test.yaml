@@ -25,7 +25,7 @@ model:
         placeholder_modules:
           - target: torch.nn.Linear
             params:
-              in_features: 8
+              in_features: 1000
               out_features: 1280
         per_image_tokens: false
         num_vectors_per_token: 1

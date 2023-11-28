@@ -23,7 +23,7 @@ class ImageEncoder:
         self.pre_trained_model = model(include_top=False, pooling='avg', input_shape=(128,128,3))
         self.pre_trained_model.trainable = False
 
-    def __apply__(self, image):
+    def __call__(self, image):
         image = tf.keras.utils.image.img_to_array(image)
         image = normalize_img(image, tf.constant([128, 128]))
         image = tf.expand_dims(image, 0)
@@ -36,5 +36,5 @@ class NullEncoder:
         self.output_dim = output_dim
 
 
-def __apply__(self, image):
+def __call__(self, image):
     return torch.ones(self.output_dim)

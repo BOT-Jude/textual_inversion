@@ -4,6 +4,7 @@ import PIL
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
+from ldm.util import instantiate_from_config
 
 import random
 
@@ -181,7 +182,7 @@ class PersonalizedBase(Dataset):
 
         # generate classifications for all images
 
-        self.image_encoder = image_encoder
+        self.image_encoder = instantiate_from_config(image_encoder)
         self.classifier_embeddings = torch.zeros(self.num_images, image_embedding_dim)
 
         for i in range(self.num_images):

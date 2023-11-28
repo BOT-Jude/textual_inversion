@@ -91,6 +91,7 @@ data:
     batch_size: 4
     num_workers: 2
     wrap: false
+
     train:
       target: ldm.data.personalized_with_embeddings.PersonalizedBase
       params:
@@ -98,6 +99,12 @@ data:
         set: train
         per_image_tokens: false
         repeats: 100
+        image_encoder:
+          target: image_encoder.NullEncoder
+          params:
+            output_dim: 8
+        image_embedding_dim: 8
+
     validation:
       target: ldm.data.personalized_with_embeddings.PersonalizedBase
       params:
@@ -105,6 +112,11 @@ data:
         set: val
         per_image_tokens: false
         repeats: 10
+        image_encoder:
+          target: image_encoder.NullEncoder
+          params:
+            output_dim: 8
+        image_embedding_dim: 8
 
 lightning:
   modelcheckpoint:

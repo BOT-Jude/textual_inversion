@@ -131,6 +131,7 @@ per_img_token_list = [
     'א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת',
 ]
 
+
 class PersonalizedBase(Dataset):
     def __init__(self,
                  data_root,
@@ -144,6 +145,8 @@ class PersonalizedBase(Dataset):
                  center_crop=False,
                  mixing_prob=0.25,
                  coarse_class_text=None,
+                 image_encoder=None,
+                 image_embedding_dim=None
                  ):
 
         self.data_root = data_root
@@ -175,6 +178,16 @@ class PersonalizedBase(Dataset):
                               "lanczos": PIL.Image.LANCZOS,
                               }[interpolation]
         self.flip = transforms.RandomHorizontalFlip(p=flip_p)
+
+        # generate classifications for all images
+
+        self.image_encoder = image_encoder
+        self.classifier_embeddings = torch.zeros(self.num_images, image_embedding_dim)
+
+        for i in range(self.num_images):
+
+            image = Image.open(self.image_paths[i])
+            self.classifier_embeddings[i] = self.image_encoder(image).detach()
 
     def __len__(self):
         return self._length
@@ -214,7 +227,8 @@ class PersonalizedBase(Dataset):
         image = np.array(image).astype(np.uint8)
         example["image"] = (image / 127.5 - 1.0).astype(np.float32)
 
+        # include classifier embedding of image in example
         example["embeddings"] = {}
-        example["embeddings"][placeholder_string] = torch.ones(8)
+        example["embeddings"][placeholder_string] = self.classifier_embeddings[i % self.num_images]
 
         return example

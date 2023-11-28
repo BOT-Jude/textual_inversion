@@ -25,7 +25,7 @@ model:
         placeholder_modules:
           - target: torch.nn.Linear
             params:
-              in_features: 1000
+              in_features: 2048
               out_features: 1280
         per_image_tokens: false
         num_vectors_per_token: 1
@@ -101,7 +101,7 @@ data:
         repeats: 100
         image_encoder:
           target: image_encoder.ImageEncoder
-        image_embedding_dim: 1000
+        image_embedding_dim: 2048
 
     validation:
       target: ldm.data.personalized_with_embeddings.PersonalizedBase
@@ -112,7 +112,7 @@ data:
         repeats: 10
         image_encoder:
           target: image_encoder.ImageEncoder
-        image_embedding_dim: 1000
+        image_embedding_dim: 2048
 
 lightning:
   modelcheckpoint:

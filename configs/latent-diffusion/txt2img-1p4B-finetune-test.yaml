@@ -100,10 +100,8 @@ data:
         per_image_tokens: false
         repeats: 100
         image_encoder:
-          target: image_encoder.NullEncoder
-          params:
-            output_dim: 8
-        image_embedding_dim: 8
+          target: image_encoder.ImageEncoder
+        image_embedding_dim: 1000
 
     validation:
       target: ldm.data.personalized_with_embeddings.PersonalizedBase
@@ -113,10 +111,8 @@ data:
         per_image_tokens: false
         repeats: 10
         image_encoder:
-          target: image_encoder.NullEncoder
-          params:
-            output_dim: 8
-        image_embedding_dim: 8
+          target: image_encoder.ImageEncoder
+        image_embedding_dim: 1000
 
 lightning:
   modelcheckpoint:

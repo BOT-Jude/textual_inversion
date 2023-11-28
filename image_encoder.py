@@ -24,7 +24,7 @@ class ImageEncoder:
         self.pre_trained_model.trainable = False
 
     def __call__(self, image):
-        image = tf.keras.utils.image.img_to_array(image)
+        image = tf.keras.utils.img_to_array(image)
         image = normalize_img(image, tf.constant([128, 128]))
         image = tf.expand_dims(image, 0)
 

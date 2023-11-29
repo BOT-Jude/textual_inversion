@@ -133,6 +133,10 @@ per_img_token_list = [
 ]
 
 
+def is_image(filename):
+    return filename.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif'))
+
+
 class PersonalizedBase(Dataset):
     def __init__(self,
                  data_root,
@@ -151,7 +155,8 @@ class PersonalizedBase(Dataset):
 
         self.data_root = data_root
 
-        self.image_paths = [os.path.join(self.data_root, file_path) for file_path in os.listdir(self.data_root)]
+        paths = [os.path.join(self.data_root, file_path) for file_path in os.listdir(self.data_root)]
+        self.image_paths = list(filter(is_image, paths))
 
         # self._length = len(self.image_paths)
         self.num_images = len(self.image_paths)
@@ -182,7 +187,7 @@ class PersonalizedBase(Dataset):
         # generate classifications for all images
 
         self.image_encoder = instantiate_from_config(image_encoder)
-        self.classifier_embeddings = self.image_encoder(self.image_paths)
+        self.classifier_embeddings = self.image_encoder(self.data_root)
 
     def __len__(self):
         return self._length

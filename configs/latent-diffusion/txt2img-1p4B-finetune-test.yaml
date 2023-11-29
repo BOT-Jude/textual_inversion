@@ -102,7 +102,7 @@ data:
         image_encoder:
           target: image_encoder.ImageEncoder
           params:
-            embedding_dim: = 1000
+            embedding_dim: 1000
 
     validation:
       target: ldm.data.personalized_with_embeddings.PersonalizedBase
@@ -114,7 +114,7 @@ data:
         image_encoder:
           target: image_encoder.ImageEncoder
           params:
-            embedding_dim: = 1000
+            embedding_dim: 1000
 
 lightning:
   modelcheckpoint:

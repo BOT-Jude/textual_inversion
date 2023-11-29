@@ -27,7 +27,7 @@ class ImageEncoder:
     def __call__(self, image_paths):
         embeddings = torch.zeros(len(image_paths), 1000)
         for i, path in enumerate(image_paths):
-            image = tf.keras.utils.load_image(path)
+            image = tf.keras.utils.load_img(path)
             image = normalize_img(image, tf.constant([128, 128]))
             image = tf.expand_dims(image, 0)
 

@@ -100,7 +100,7 @@ data:
         per_image_tokens: false
         repeats: 100
         image_encoder:
-          target: image_encoder.ImageEncoder
+          target: image_encoder.XceptionImageEncoder
           params:
             embedding_dim: 2048
 
@@ -112,7 +112,7 @@ data:
         per_image_tokens: false
         repeats: 10
         image_encoder:
-          target: image_encoder.ImageEncoder
+          target: image_encoder.XceptionImageEncoder
           params:
             embedding_dim: 2048
 

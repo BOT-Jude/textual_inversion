@@ -100,7 +100,7 @@ data:
         per_image_tokens: false
         repeats: 100
         image_encoder:
-          target: image_encoder.LookupEncoder
+          target: image_encoder.CelebALookupEncoder
           params:
             embedding_dim: 50
 
@@ -112,7 +112,7 @@ data:
         per_image_tokens: false
         repeats: 10
         image_encoder:
-          target: image_encoder.LookupEncoder
+          target: image_encoder.CelebALookupEncoder
           params:
             embedding_dim: 50
 

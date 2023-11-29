@@ -146,8 +146,7 @@ class PersonalizedBase(Dataset):
                  center_crop=False,
                  mixing_prob=0.25,
                  coarse_class_text=None,
-                 image_encoder=None,
-                 image_embedding_dim=None
+                 image_encoder=None
                  ):
 
         self.data_root = data_root
@@ -183,12 +182,7 @@ class PersonalizedBase(Dataset):
         # generate classifications for all images
 
         self.image_encoder = instantiate_from_config(image_encoder)
-        self.classifier_embeddings = torch.zeros(self.num_images, image_embedding_dim)
-
-        for i in range(self.num_images):
-
-            image = Image.open(self.image_paths[i])
-            self.classifier_embeddings[i] = self.image_encoder(image).detach()
+        self.classifier_embeddings = self.image_encoder(self.image_paths)
 
     def __len__(self):
         return self._length

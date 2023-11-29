@@ -18,22 +18,27 @@ def normalize_img(image, img_size):
 
 
 class ImageEncoder:
-    def __init__(self):
+    def __init__(self, embedding_dim):
+        assert embedding_dim == 1000
         model = {m[0]: m[1] for m in inspect.getmembers(tf.keras.applications, inspect.isfunction)}["Xception"]
-        self.pre_trained_model = model(include_top=False, pooling='avg', input_shape=(128,128,3))
+        self.pre_trained_model = model(include_top=False, pooling='avg', input_shape=(128, 128, 3))
         self.pre_trained_model.trainable = False
 
-    def __call__(self, image):
-        image = tf.keras.utils.img_to_array(image)
-        image = normalize_img(image, tf.constant([128, 128]))
-        image = tf.expand_dims(image, 0)
+    def __call__(self, image_paths):
+        embeddings = torch.zeros(len(image_paths), 1000)
+        for i, path in enumerate(image_paths):
+            image = tf.keras.utils.load_image(path)
+            image = normalize_img(image, tf.constant([128, 128]))
+            image = tf.expand_dims(image, 0)
 
-        return torch.from_numpy(self.pre_trained_model(image).numpy()[0])
+            embeddings[i] = torch.from_numpy(self.pre_trained_model(image).numpy()[0])
+
+        return embeddings
 
 
 class NullEncoder:
-    def __init__(self, output_dim):
-        self.output_dim = output_dim
+    def __init__(self, embedding_dim):
+        self.embedding_dim = embedding_dim
 
-    def __call__(self, image):
-        return torch.ones(self.output_dim)
+    def __call__(self, image_paths):
+        return torch.ones(len(image_paths), self.embedding_dim)

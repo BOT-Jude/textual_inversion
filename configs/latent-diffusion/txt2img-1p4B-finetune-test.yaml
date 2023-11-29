@@ -101,6 +101,8 @@ data:
         repeats: 100
         image_encoder:
           target: image_encoder.ImageEncoder
+          params:
+            embedding_dim: = 1000
         image_embedding_dim: 2048
 
     validation:
@@ -112,6 +114,8 @@ data:
         repeats: 10
         image_encoder:
           target: image_encoder.ImageEncoder
+          params:
+            embedding_dim: = 1000
         image_embedding_dim: 2048
 
 lightning:

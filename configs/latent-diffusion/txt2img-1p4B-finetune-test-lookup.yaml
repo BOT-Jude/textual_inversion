@@ -98,7 +98,7 @@ data:
         size: 256
         set: train
         per_image_tokens: false
-        repeats: 100
+        repeats: 1
         image_encoder:
           target: image_encoder.CelebALookupEncoder
           params:
@@ -110,7 +110,7 @@ data:
         size: 256
         set: val
         per_image_tokens: false
-        repeats: 10
+        repeats: 1
         image_encoder:
           target: image_encoder.CelebALookupEncoder
           params:
